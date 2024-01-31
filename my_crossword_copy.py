@@ -88,11 +88,47 @@ class Crossword():
                     ))
             
             # Horizontal words
-                    starts_word = (
+            starts_word = (
                         self.structure[i][j]
                         an (j == 0 or not self.structure[i][j] - 1)
                     
-                )
-                if starts_word: 
-                    length  = 1
-                    for k in range(j + 1, self.width)
+            )
+            if starts_word: 
+                length  = 1
+                for k in range(j + 1, self.width)
+                 if self.structure[i][k]:
+                            length += 1
+                        else:
+                            break
+                    if length > 1:
+                            self.variables.add(variable(
+                                i=i, j=j,
+                                direction=variable.ACROSS,
+                                lenght=length
+                            ))
+        # Compute overlaps for each word
+        # For any pair of variables V1, V2, their overlap is either:
+            # None, if the two variables do not overlap, or
+            # (i, j), where v1's ith character overlaps V2's ith character 
+        self.overlaps = dict()
+        for v1 in self.variables:
+            for v2 in self.variables:
+                if v1 == v2:
+                    continue
+                cells1 = v1.cells
+                cells2 = v2.cells
+                intersection = set(cells1).intersection(ceslls2)
+                if not intersection:
+                    self.overlaps[v1, v2] = None
+                else:
+                    intersection = intersection.pop()
+                    self.overlaps[v1, v2] = (
+                        cells1.index(intersection),
+                        cells2.index(intersection)
+                    )
+    def neighbors(self, var):
+        """Given a variable, return set of overlapping variables."""
+        return set(
+            v for v in self.variables
+            if v != var and self.overlaps[v, var]
+        )
