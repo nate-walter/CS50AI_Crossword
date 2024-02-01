@@ -2,6 +2,27 @@ import sys
 
 from crossword import *
 
+###########Acheive Node Consistency###########
+#*** see bottom of GPT-4: Pt. 2 CS50AI Crossword Project 3 2024-02-01
+
+# Length, unary constraints (not ac3)
+# Initialization phase where Domain for each variable are first established
+# Handle before ac3() 
+
+# Positional constraints (is ac3): 
+    # part of initial puzzle setup and remain constant. 
+    # IF the postnl constrnt is bcs of intersection 
+    # w another word its binary (and part of ac3)
+
+# Intersection constraints (is ac3):
+    # where 2 variables intersect / cross each other
+    # inherent to the structure of the crossword puzzle
+    # remain constant throughout the program's run
+    # dictates that for interscting words the letter at that point must be the same
+    # Crucial to the ac3() function
+
+# Least Constraining Value / Minimum Constraing Value - used during backtracking search
+
 
 class CrosswordCreator():
 
@@ -94,14 +115,35 @@ class CrosswordCreator():
         return self.backtrack(dict())
 
     def enforce_node_consistency(self):
+
+        # Uses revise()
+
+
         """
         Update `self.domains` such that each variable is node-consistent.
         (Remove any values that are inconsistent with a variable's unary
          constraints; in this case, the length of the word.)
+
+         Need:
+         - self.unary (all words in the variable's domain must be this long, if not adios)
+         - self.domains (the domain of each variable)
+         - self.variables (the set of variables in the crossword)
+         - self.binary (the set of binary constraints for each variable)
+         - self.character_idx (a pair of coordinates that must match those of its neeighbor which
+         intersects with it)
+
+         # self.domains[v].remove(x)
+
+
         """
+
+        # return result should be fed into ac3()
+
+
         raise NotImplementedError
 
     def revise(self, x, y):
+
         """
         Make variable `x` arc consistent with variable `y`.
         To do so, remove values from `self.domains[x]` for which there is no
@@ -113,6 +155,9 @@ class CrosswordCreator():
         raise NotImplementedError
 
     def ac3(self, arcs=None):
+
+        # arcs could poss be the return result from enforce_node_consistency()
+
         """
         Update `self.domains` such that each variable is arc consistent.
         If `arcs` is None, begin with initial list of all arcs in the problem.
@@ -138,6 +183,10 @@ class CrosswordCreator():
         raise NotImplementedError
 
     def order_domain_values(self, var, assignment):
+
+        # for word_list in var:
+          # 
+
         """
         Return a list of values in the domain of `var`, in order by
         the number of values they rule out for neighboring variables.
